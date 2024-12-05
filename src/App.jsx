@@ -62,23 +62,13 @@ function App() {
   });
   const [postList, setPostList] = useState([]);
 
-  /*const newPost = {
-    id: 1,
-    title: "",
-    image: "",
-    description: "",
-  };*/
-
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const addContent = () => ({
-      ...postList,
-      [e.target.title]: e.target.value,
-    });
-
-    setPostList(addContent);
+    let newList = [...postList];
+    newList.push(formData.title);
+    setFormData("");
+    setPostList(newList);
   };
 
   /* Funzione per cancellare l'elemento */
