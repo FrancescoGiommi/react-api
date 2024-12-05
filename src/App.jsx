@@ -65,10 +65,23 @@ function App() {
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
+
     let newList = [...postList];
-    newList.push(formData.title);
+    setFormData((formData) => ({
+      [formData.title]: e.target.value,
+      [formData.image]: e.target.value,
+      [formData.description]: e.target.value,
+    }));
+    newList.push(formData);
     setFormData("");
     setPostList(newList);
+  };
+
+  // Fetching dei dati
+  const fetchPosts = () => {
+    fetch("https://jsonplaceholder.typicode.com/todos")
+      .then((res) => res.json())
+      .then(setPost);
   };
 
   /* Funzione per cancellare l'elemento */
