@@ -55,23 +55,21 @@ import "./App.css";
 function App() {
   /* Uso lo use state per settare l'input  */
   const [formData, setformData] = useState("");
-  const [formPost, setFormPost] = useState([
-    {
-      id: 1,
-      title: "",
-      image: "",
-      description: "",
-    },
-  ]);
+  const [formPost, setFormPost] = useState([]);
+
+  const newPost = {
+    id: 1,
+    title: "",
+    image: "",
+    description: "",
+  };
 
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const addContent = () => ({
-      ...formPost,
-      [e.target.title]: e.target.value,
-    });
+    const addContent = [...formPost, formData];
+
     setFormPost(addContent);
   };
 
@@ -134,9 +132,9 @@ function App() {
           <div className="col-3 form-control">
             <select className="form-select mb-3">
               <option selected>Open this select menu</option>
-              <option defaultValue="1">One</option>
-              <option defaultValue="2">Two</option>
-              <option defaultValue="3">Three</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
             </select>
 
             <button className="btn btn-primary mx-2">Invia</button>
