@@ -54,31 +54,39 @@ import "./App.css";
 
 function App() {
   /* Uso lo use state per settare l'input  */
-  const [formData, setformData] = useState("");
-  const [formPost, setFormPost] = useState([]);
-
-  const newPost = {
+  const [formData, setFormData] = useState({
     id: 1,
     title: "",
     image: "",
     description: "",
-  };
+  });
+  const [postList, setPostList] = useState([]);
+
+  /*const newPost = {
+    id: 1,
+    title: "",
+    image: "",
+    description: "",
+  };*/
 
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const addContent = [...formPost, formData];
+    const addContent = () => ({
+      ...postList,
+      [e.target.title]: e.target.value,
+    });
 
-    setFormPost(addContent);
+    setPostList(addContent);
   };
 
   /* Funzione per cancellare l'elemento */
   const removeData = (id) => {
-    const deleteData = formData.filter((item, index) => {
-      return index !== id;
+    const deleteData = postList.filter((item, index) => {
+      return id !== id;
     });
-    setformData(deleteData);
+    setFormData(deleteData);
   };
 
   return (
@@ -96,10 +104,9 @@ function App() {
               type="text"
               value={formData.title}
               onChange={(e) => {
-                setformData(e.target.value);
+                setFormData(e.target.value);
               }}
             />
-            <button className="btn btn-primary mx-2">Invia</button>
           </div>
           <div className="col-3 form-control">
             <label className="form-label" htmlFor="image-form">
@@ -110,10 +117,9 @@ function App() {
               type="text"
               value={formData.image}
               onChange={(e) => {
-                setformData(e.target.value);
+                setFormData(e.target.value);
               }}
             />
-            <button className="btn btn-primary mx-2">Invia</button>
           </div>
           <div className="col-3 form-control">
             <label className="form-label" htmlFor="description-form">
@@ -124,10 +130,9 @@ function App() {
               type="text"
               value={formData.description}
               onChange={(e) => {
-                setformData(e.target.value);
+                setFormData(e.target.value);
               }}
             />
-            <button className="btn btn-primary mx-2">Invia</button>
           </div>
           <div className="col-3 form-control">
             <select className="form-select mb-3">
@@ -136,20 +141,21 @@ function App() {
               <option value="2">Two</option>
               <option value="3">Three</option>
             </select>
-
-            <button className="btn btn-primary mx-2">Invia</button>
           </div>
+          <button className="btn btn-primary mx-2">Invia</button>
         </form>
         <hr />
         {/* Creo una copia con il map e aggiunngo l'elemento al DOM */}
         <div className="row">
           <div className="form-control d-flex">
-            {formPost.map((id, title, image, description) => (
+            {postList.map((id, title, image, description) => (
               <div className="card" key={id}>
-                <div>{image}</div>
+                <div>
+                  <img src={image} alt="" />
+                </div>
                 <div className="card-body">
-                  <h2>{title}</h2>
-                  <p>{description}</p>
+                  <h2>Titolo: {title}</h2>
+                  <p>Descrizione: {description}</p>
                   <button
                     onClick={() => removeData(id)}
                     className="btn btn-danger mx-2"
