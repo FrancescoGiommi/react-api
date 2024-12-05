@@ -55,25 +55,24 @@ import "./App.css";
 function App() {
   /* Uso lo use state per settare l'input  */
   const [formData, setformData] = useState("");
-  const [formPost, setFormPost] = useState({});
+  const [formPost, setFormPost] = useState([
+    {
+      id: 1,
+      title: "",
+      image: "",
+      description: "",
+    },
+  ]);
 
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const newItem = {
-      title: formData,
-      image: formData,
-      description: formData,
-      status: false,
-    };
-    setFormPost((formPost) => ({
+    const addContent = () => ({
       ...formPost,
       [e.target.title]: e.target.value,
-      [e.target.image]: e.target.value,
-      [e.target.description]: e.target.value,
-    }));
-    setFormPost(newItem);
+    });
+    setFormPost(addContent);
   };
 
   /* Funzione per cancellare l'elemento */
@@ -105,7 +104,6 @@ function App() {
             <button className="btn btn-primary mx-2">Invia</button>
           </div>
           <div className="col-3 form-control">
-            {/* Immagine */}
             <label className="form-label" htmlFor="image-form">
               Immagine
             </label>
@@ -120,7 +118,6 @@ function App() {
             <button className="btn btn-primary mx-2">Invia</button>
           </div>
           <div className="col-3 form-control">
-            {/* Descrizione */}
             <label className="form-label" htmlFor="description-form">
               Descrizione
             </label>
@@ -135,7 +132,6 @@ function App() {
             <button className="btn btn-primary mx-2">Invia</button>
           </div>
           <div className="col-3 form-control">
-            {/* Categoria */}
             <select className="form-select mb-3">
               <option selected>Open this select menu</option>
               <option defaultValue="1">One</option>
@@ -147,22 +143,24 @@ function App() {
           </div>
         </form>
         <hr />
-        {/* Creo una copia con il map e aggiunngo l'elemento al DOM */}*
+        {/* Creo una copia con il map e aggiunngo l'elemento al DOM */}
         <div className="row">
-          <div className="form-control d-flex" key={index}>
-            <div className="card">
-              <div>{image}</div>
-              <div className="card-body">
-                <h2>{title}</h2>
-                <p>{description}</p>
-                <button
-                  onClick={() => removeData(id)}
-                  className="btn btn-danger mx-2"
-                >
-                  <i className="fa-solid fa-trash"></i>
-                </button>
+          <div className="form-control d-flex">
+            {formPost.map((id, title, image, description) => (
+              <div className="card" key={id}>
+                <div>{image}</div>
+                <div className="card-body">
+                  <h2>{title}</h2>
+                  <p>{description}</p>
+                  <button
+                    onClick={() => removeData(id)}
+                    className="btn btn-danger mx-2"
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
