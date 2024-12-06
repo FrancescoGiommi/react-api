@@ -48,40 +48,37 @@ Esempio:
 } */
 
 /* Importo useState  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 
+const defaultPost = {
+  id: 1,
+  title: "post 1",
+  image: "image 1",
+  description: "descrizione 1",
+  published: false,
+  tags: [],
+};
 function App() {
   /* Uso lo use state per settare l'input  */
-  const [formData, setFormData] = useState({
-    id: 1,
-    title: "",
-    image: "",
-    description: "",
-  });
+  const [formData, setFormData] = useState(defaultPost);
   const [postList, setPostList] = useState([]);
 
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    let newList = [...postList];
-    setFormData((formData) => ({
-      [formData.title]: e.target.value,
-      [formData.image]: e.target.value,
-      [formData.description]: e.target.value,
-    }));
-    newList.push(formData);
-    setFormData("");
-    setPostList(newList);
   };
 
-  // Fetching dei dati
-  const fetchPosts = () => {
-    fetch("https://jsonplaceholder.typicode.com/todos")
-      .then((res) => res.json())
-      .then(setPost);
+  /* copio l'oggetto  */
+  const handleInputForm = (e) => {
+    const newFormData = {
+      ...formData,
+      [e.target.title]: e.target.value,
+      [e.target.image]: e.target.value,
+      [e.target.description]: e.target.value,
+    };
+    setFormData(newFormData);
   };
 
   /* Funzione per cancellare l'elemento */
@@ -92,57 +89,68 @@ function App() {
     setFormData(deleteData);
   };
 
+  /* Fetching dei dati */
+  const fetchPosts = () => {
+    fetch("https://localhost:3000/posts")
+      .then((res) => res.json())
+      .then(data);
+    setPostList(data);
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
   return (
     <>
       <div className="container">
         <h1>My blog</h1>
         <form onSubmit={handleSubmit} className="row d-flex">
-          <div className="col-3 form-control">
+          <div className="col-4 form-control">
             {/* Titolo */}
             <label className="form-label" htmlFor="text-form">
               Titolo
             </label>
             <input
               id="text-form"
-              type="text"
+              name="title"
               value={formData.title}
-              onChange={(e) => {
-                setFormData(e.target.value);
-              }}
+              onChange={handleInputForm}
             />
           </div>
-          <div className="col-3 form-control">
+          <div className="col-4 form-control">
             <label className="form-label" htmlFor="image-form">
               Immagine
             </label>
             <input
               id="image-form"
               type="text"
+              name="image"
               value={formData.image}
-              onChange={(e) => {
-                setFormData(e.target.value);
-              }}
+              onChange={handleInputForm}
             />
           </div>
-          <div className="col-3 form-control">
+          <div className="col-4 form-control">
             <label className="form-label" htmlFor="description-form">
               Descrizione
             </label>
             <input
               id="description-form"
               type="text"
+              name="image"
               value={formData.description}
-              onChange={(e) => {
-                setFormData(e.target.value);
-              }}
+              onChange={handleInputForm}
             />
           </div>
-          <div className="col-3 form-control">
-            <select className="form-select mb-3">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+          <div className="col-4 form-control">
+            <label className="form-label" htmlFor="form-selection">
+              Seleziona un post
+            </label>
+            <select className="form-select mb-3" id="form-selection">
+              <option value="">Seleziona un post</option>
+              {postList.map((post, index) => (
+                <option value={index}>{post.title}</option>
+              ))}
             </select>
           </div>
           <button className="btn btn-primary mx-2">Invia</button>
@@ -151,23 +159,29 @@ function App() {
         {/* Creo una copia con il map e aggiunngo l'elemento al DOM */}
         <div className="row">
           <div className="form-control d-flex">
-            {postList.map((id, title, image, description) => (
-              <div className="card" key={id}>
-                <div>
-                  <img src={image} alt="" />
+            {postList.length ? (
+              postList.map((id, title, image, description) => (
+                <div className="card" key={id}>
+                  <div>
+                    <img src={image} alt="" />
+                  </div>
+                  <div className="card-body">
+                    <h2>Titolo: {title}</h2>
+                    <p>Descrizione: {description}</p>
+                    <button
+                      onClick={() => removeData(id)}
+                      className="btn btn-danger mx-2"
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
                 </div>
-                <div className="card-body">
-                  <h2>Titolo: {title}</h2>
-                  <p>Descrizione: {description}</p>
-                  <button
-                    onClick={() => removeData(id)}
-                    className="btn btn-danger mx-2"
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </div>
+              ))
+            ) : (
+              <div className="card">
+                <h3>Nessun post disponibile</h3>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
