@@ -71,24 +71,21 @@ function App() {
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const newFormData = {
-      ...formData,
-    };
-    setPostList([...postList, newFormData]);
-    setFormData(defaultPost);
+    setPostList([...postList, formData]);
+    setFormData({ ...defaultPost, id: formData.id + 1 });
   };
 
   /* copio l'oggetto  */
   const handleInputForm = (e) => {
-    newFormFields = {
+    const newFormFields = {
       ...formData,
 
-      [e.target.title]: e.target.value,
-      [e.target.image]: e.target.value,
-      [e.target.description]: e.target.value,
+      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value,
     };
     setFormData(newFormFields);
+    console.log(newFormFields);
   };
 
   const handleFormTagChange = (e) => {
@@ -163,7 +160,7 @@ function App() {
                 id="description-form"
                 className="form-control"
                 type="text"
-                name="image"
+                name="description"
                 value={formData.description}
                 onChange={handleInputForm}
               />
