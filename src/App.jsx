@@ -136,6 +136,7 @@ function App() {
               </label>
               <input
                 id="text-form"
+                className="form-control"
                 name="title"
                 value={formData.title}
                 onChange={handleInputForm}
@@ -147,6 +148,7 @@ function App() {
               </label>
               <input
                 id="image-form"
+                className="form-control"
                 type="text"
                 name="image"
                 value={formData.image}
@@ -159,6 +161,7 @@ function App() {
               </label>
               <input
                 id="description-form"
+                className="form-control"
                 type="text"
                 name="image"
                 value={formData.description}
@@ -206,14 +209,19 @@ function App() {
         <div className="row">
           <div className="form-control d-flex">
             {postList.length ? (
-              postList.map((id, title, image, description) => (
-                <div className="card" key={id}>
+              postList.map((post, index) => (
+                <div className="card" key={index}>
                   <div>
-                    <img src={image} alt="" />
+                    <img src={post.image} alt="" />
                   </div>
                   <div className="card-body">
-                    <h2>Titolo: {title}</h2>
-                    <p>Descrizione: {description}</p>
+                    <h2>Titolo: {post.title}</h2>
+                    <p>Descrizione: {post.description}</p>
+                    {post.tags.map((tag) => (
+                      <span className="badge rounded-pill text-bg-primary me-2">
+                        {tag}
+                      </span>
+                    ))}
                     <button
                       onClick={() => removeData(id)}
                       className="btn btn-danger mx-2"
