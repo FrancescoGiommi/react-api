@@ -60,6 +60,9 @@ const defaultPost = {
   published: false,
   tags: [],
 };
+
+const tagsList = ["HTML", "CSS", "JS"];
+
 function App() {
   /* Uso lo use state per settare l'input  */
   const [formData, setFormData] = useState(defaultPost);
@@ -173,49 +176,27 @@ function App() {
                 ))}
               </select>
             </div>
-            <div className="col-4">
-              <div className="fs-4">Tags</div>
-              <ul className="d-flex gap-3">
-                <li>
-                  <label className="form-label" htmlFor="tags-form-html">
-                    HTML
+            <div>
+              <h4>Tags</h4>
+              <div className="col-4 my-3 d-flex gap-3">
+                {tagsList.map((tag, index) => (
+                  <label
+                    className="form-label"
+                    htmlFor={`tags-form-${tag}`}
+                    key={index}
+                  >
+                    {tag}
                     <input
-                      checked={formData.tags.includes("HTML")}
-                      id="tags-form"
+                      checked={formData.tags.includes(tag)}
+                      id={`tags-form-${tag}`}
                       type="checkbox"
                       name="tags"
-                      value="HTML"
+                      value={tag}
                       onChange={handleFormTagChange}
                     />
                   </label>
-                </li>
-                <li>
-                  <label className="form-label" htmlFor="tags-form-css">
-                    CSS
-                    <input
-                      checked={formData.tags.includes("CSS")}
-                      id="tags-form-css"
-                      type="checkbox"
-                      name="tags"
-                      value="CSS"
-                      onChange={handleFormTagChange}
-                    />
-                  </label>
-                </li>
-                <li>
-                  <label className="form-label" htmlFor="tags-form-JS">
-                    JS
-                    <input
-                      checked={formData.tags.includes("JS")}
-                      id="tags-form"
-                      type="checkbox"
-                      name="tags"
-                      value="JS"
-                      onChange={handleFormTagChange}
-                    />
-                  </label>
-                </li>
-              </ul>
+                ))}
+              </div>
             </div>
           </div>
           <button className="btn btn-primary col-12 mx-2">Invia</button>
