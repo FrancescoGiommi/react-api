@@ -104,11 +104,11 @@ function App() {
   };
 
   /* Funzione per cancellare l'elemento */
-  const removeData = (id) => {
-    const deleteData = postList.filter((item, index) => {
-      return id !== id;
+  const removePost = (deleteIndex) => {
+    const deletePost = postList.filter((item, index) => {
+      return deleteIndex !== index;
     });
-    setFormData(deleteData);
+    setPostList(deletePost);
   };
 
   /* Fetching dei dati 
@@ -206,37 +206,36 @@ function App() {
         </form>
         <hr />
         {/* Creo una copia con il map e aggiunngo l'elemento al DOM */}
-        <div className="row">
-          <div className="form-control d-flex">
-            {postList.length ? (
-              postList.map((post, index) => (
-                <div className="card" key={index}>
-                  <div>
-                    <img src={post.image} alt="" />
-                  </div>
-                  <div className="card-body">
-                    <h2>Titolo: {post.title}</h2>
-                    <p>Descrizione: {post.description}</p>
-                    {post.tags.map((tag) => (
-                      <span className="badge rounded-pill text-bg-primary me-2">
-                        {tag}
-                      </span>
-                    ))}
-                    <button
-                      onClick={() => removeData(id)}
-                      className="btn btn-danger mx-2"
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
-                  </div>
+
+        <div className="row form-control d-flex">
+          {postList.length ? (
+            postList.map((post, index) => (
+              <div className="card" key={index}>
+                <div>
+                  <img src={post.image} alt="" />
                 </div>
-              ))
-            ) : (
-              <div className="card">
-                <h3>Nessun post disponibile</h3>
+                <div className="card-body">
+                  <h2>{post.title}</h2>
+                  <p>{post.description}</p>
+                  {post.tags.map((tag) => (
+                    <span className="badge rounded-pill text-bg-primary me-2">
+                      {tag}
+                    </span>
+                  ))}
+                  <button
+                    onClick={() => removePost(index)}
+                    className="btn btn-danger mx-2"
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </div>
               </div>
-            )}
-          </div>
+            ))
+          ) : (
+            <div className="card">
+              <h3>Nessun post disponibile</h3>
+            </div>
+          )}
         </div>
       </div>
     </>
