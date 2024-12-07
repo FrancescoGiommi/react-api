@@ -125,11 +125,11 @@ function App() {
       <div className="container">
         <h1>My blog</h1>
         <form onSubmit={handleSubmit}>
-          <div className="row">
+          <div className="row gap-3">
             <div className="col-4">
               {/* Titolo */}
               <label className="form-label" htmlFor="text-form">
-                Titolo
+                <div className="fs-4">Titolo</div>
               </label>
               <input
                 id="text-form"
@@ -140,7 +140,7 @@ function App() {
             </div>
             <div className="col-4">
               <label className="form-label" htmlFor="image-form">
-                Immagine
+                <div className="fs-4">Immagine</div>
               </label>
               <input
                 id="image-form"
@@ -152,7 +152,7 @@ function App() {
             </div>
             <div className="col-4">
               <label className="form-label" htmlFor="description-form">
-                Descrizione
+                <div className="fs-4">Descrizione</div>
               </label>
               <input
                 id="description-form"
@@ -164,7 +164,7 @@ function App() {
             </div>
             <div className="col-4">
               <label className="form-label" htmlFor="form-selection">
-                Seleziona un post
+                <div className="fs-4">Seleziona un post</div>
               </label>
               <select className="form-select mb-3" id="form-selection">
                 <option value="">Seleziona un post</option>
@@ -174,42 +174,51 @@ function App() {
               </select>
             </div>
             <div className="col-4">
-              <label className="form-label" htmlFor="tags-form-html">
-                HTML
-                <input
-                  checked={formData.tags.includes("HTML")}
-                  id="tags-form"
-                  type="checkbox"
-                  name="tags"
-                  value="HTML"
-                  onChange={handleFormTagChange}
-                />
-              </label>
-              <label className="form-label" htmlFor="tags-form-css">
-                CSS
-                <input
-                  checked={formData.tags.includes("CSS")}
-                  id="tags-form-css"
-                  type="checkbox"
-                  name="tags"
-                  value="CSS"
-                  onChange={handleFormTagChange}
-                />
-              </label>
-              <label className="form-label" htmlFor="tags-form-JS">
-                JS
-                <input
-                  checked={formData.tags.includes("JS")}
-                  id="tags-form"
-                  type="checkbox"
-                  name="tags"
-                  value="JS"
-                  onChange={handleFormTagChange}
-                />
-              </label>
+              <div className="fs-4">Tags</div>
+              <ul className="d-flex gap-3">
+                <li>
+                  <label className="form-label" htmlFor="tags-form-html">
+                    HTML
+                    <input
+                      checked={formData.tags.includes("HTML")}
+                      id="tags-form"
+                      type="checkbox"
+                      name="tags"
+                      value="HTML"
+                      onChange={handleFormTagChange}
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label className="form-label" htmlFor="tags-form-css">
+                    CSS
+                    <input
+                      checked={formData.tags.includes("CSS")}
+                      id="tags-form-css"
+                      type="checkbox"
+                      name="tags"
+                      value="CSS"
+                      onChange={handleFormTagChange}
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label className="form-label" htmlFor="tags-form-JS">
+                    JS
+                    <input
+                      checked={formData.tags.includes("JS")}
+                      id="tags-form"
+                      type="checkbox"
+                      name="tags"
+                      value="JS"
+                      onChange={handleFormTagChange}
+                    />
+                  </label>
+                </li>
+              </ul>
             </div>
           </div>
-          <button className="btn btn-primary mx-2">Invia</button>
+          <button className="btn btn-primary col-12 mx-2">Invia</button>
         </form>
         <hr />
         {/* Creo una copia con il map e aggiunngo l'elemento al DOM */}
