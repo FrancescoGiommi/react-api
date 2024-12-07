@@ -54,9 +54,9 @@ import "./App.css";
 
 const defaultPost = {
   id: 1,
-  title: "post 1",
-  image: "image 1",
-  description: "descrizione 1",
+  title: "",
+  image: "",
+  description: "",
   published: false,
   tags: [],
 };
@@ -68,17 +68,36 @@ function App() {
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const newFormData = {
+      ...formData,
+    };
+    setPostList([...postList, newFormData]);
+    setFormData(defaultPost);
   };
 
   /* copio l'oggetto  */
   const handleInputForm = (e) => {
-    const newFormData = {
+    newFormFields = {
       ...formData,
+
       [e.target.title]: e.target.value,
       [e.target.image]: e.target.value,
       [e.target.description]: e.target.value,
     };
-    setFormData(newFormData);
+    setFormData(newFormFields);
+  };
+
+  const handleFormTagChange = (e) => {
+    let newTags;
+    if (!e.target.checked) {
+      newTags = formData.tags.filter((tag) => tag != e.target.value);
+    } else {
+      newTags = [...formData.tags, e.target.value];
+    }
+    const newFormTags = { ...formData, tags: newTags };
+    setFormData(newFormTags);
+    console.log(newFormTags);
   };
 
   /* Funzione per cancellare l'elemento */
@@ -89,7 +108,7 @@ function App() {
     setFormData(deleteData);
   };
 
-  /* Fetching dei dati */
+  /* Fetching dei dati 
   const fetchPosts = () => {
     fetch("https://localhost:3000/posts")
       .then((res) => res.json())
@@ -99,59 +118,96 @@ function App() {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, []);*/
 
   return (
     <>
       <div className="container">
         <h1>My blog</h1>
-        <form onSubmit={handleSubmit} className="row d-flex">
-          <div className="col-4 form-control">
-            {/* Titolo */}
-            <label className="form-label" htmlFor="text-form">
-              Titolo
-            </label>
-            <input
-              id="text-form"
-              name="title"
-              value={formData.title}
-              onChange={handleInputForm}
-            />
-          </div>
-          <div className="col-4 form-control">
-            <label className="form-label" htmlFor="image-form">
-              Immagine
-            </label>
-            <input
-              id="image-form"
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleInputForm}
-            />
-          </div>
-          <div className="col-4 form-control">
-            <label className="form-label" htmlFor="description-form">
-              Descrizione
-            </label>
-            <input
-              id="description-form"
-              type="text"
-              name="image"
-              value={formData.description}
-              onChange={handleInputForm}
-            />
-          </div>
-          <div className="col-4 form-control">
-            <label className="form-label" htmlFor="form-selection">
-              Seleziona un post
-            </label>
-            <select className="form-select mb-3" id="form-selection">
-              <option value="">Seleziona un post</option>
-              {postList.map((post, index) => (
-                <option value={index}>{post.title}</option>
-              ))}
-            </select>
+        <form onSubmit={handleSubmit}>
+          <div className="row">
+            <div className="col-4">
+              {/* Titolo */}
+              <label className="form-label" htmlFor="text-form">
+                Titolo
+              </label>
+              <input
+                id="text-form"
+                name="title"
+                value={formData.title}
+                onChange={handleInputForm}
+              />
+            </div>
+            <div className="col-4">
+              <label className="form-label" htmlFor="image-form">
+                Immagine
+              </label>
+              <input
+                id="image-form"
+                type="text"
+                name="image"
+                value={formData.image}
+                onChange={handleInputForm}
+              />
+            </div>
+            <div className="col-4">
+              <label className="form-label" htmlFor="description-form">
+                Descrizione
+              </label>
+              <input
+                id="description-form"
+                type="text"
+                name="image"
+                value={formData.description}
+                onChange={handleInputForm}
+              />
+            </div>
+            <div className="col-4">
+              <label className="form-label" htmlFor="form-selection">
+                Seleziona un post
+              </label>
+              <select className="form-select mb-3" id="form-selection">
+                <option value="">Seleziona un post</option>
+                {postList.map((post, index) => (
+                  <option value={index}>{post.title}</option>
+                ))}
+              </select>
+            </div>
+            <div className="col-4">
+              <label className="form-label" htmlFor="tags-form-html">
+                HTML
+                <input
+                  checked={formData.tags.includes("HTML")}
+                  id="tags-form"
+                  type="checkbox"
+                  name="tags"
+                  value="HTML"
+                  onChange={handleFormTagChange}
+                />
+              </label>
+              <label className="form-label" htmlFor="tags-form-css">
+                CSS
+                <input
+                  checked={formData.tags.includes("CSS")}
+                  id="tags-form-css"
+                  type="checkbox"
+                  name="tags"
+                  value="CSS"
+                  onChange={handleFormTagChange}
+                />
+              </label>
+              <label className="form-label" htmlFor="tags-form-JS">
+                JS
+                <input
+                  checked={formData.tags.includes("JS")}
+                  id="tags-form"
+                  type="checkbox"
+                  name="tags"
+                  value="JS"
+                  onChange={handleFormTagChange}
+                />
+              </label>
+            </div>
           </div>
           <button className="btn btn-primary mx-2">Invia</button>
         </form>
