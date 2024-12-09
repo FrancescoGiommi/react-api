@@ -67,7 +67,8 @@ function App() {
   /* Uso lo use state per settare l'input  */
   const [formData, setFormData] = useState(defaultPost);
   const [postList, setPostList] = useState([]);
-
+  const [editPost, setEditPost] = useState();
+  const [posts, setPosts] = useState([]);
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -87,6 +88,11 @@ function App() {
     setFormData(newFormFields);
     console.log(newFormFields);
   };
+
+  /*const handleEditPost = (e) => {
+    e.preventDefault();
+    const newPost = [...postList];
+  };*/
 
   const handleFormTagChange = (e) => {
     let newTags;
@@ -108,17 +114,19 @@ function App() {
     setPostList(deletePost);
   };
 
-  /* Fetching dei dati 
+  /* Fetching dei dati */
   const fetchPosts = () => {
-    fetch("https://localhost:3000/posts")
+    fetch("http://localhost:3000/posts")
       .then((res) => res.json())
-      .then(data);
-    setPostList(data);
+      .then((data) => {
+        console.log(data);
+        setPosts(data);
+      });
   };
 
   useEffect(() => {
     fetchPosts();
-  }, []);*/
+  }, []);
 
   return (
     <>
@@ -165,17 +173,6 @@ function App() {
                 onChange={handleInputForm}
               />
             </div>
-            <div className="col-4">
-              <label className="form-label" htmlFor="form-selection">
-                <div className="fs-4">Seleziona un post</div>
-              </label>
-              <select className="form-select mb-3" id="form-selection">
-                <option value="">Seleziona un post</option>
-                {postList.map((post, index) => (
-                  <option value={index}>{post.title}</option>
-                ))}
-              </select>
-            </div>
             <div>
               <h4>Tags</h4>
               <div className="col-4 my-3 d-flex gap-3">
@@ -202,26 +199,27 @@ function App() {
           <button className="btn btn-primary col-12 mx-2">Invia</button>
         </form>
         <hr />
+
         {/* Creo una copia con il map e aggiunngo l'elemento al DOM */}
 
-        <div className="row form-control d-flex">
+        <div className="row d-flex gap-3">
           {postList.length ? (
-            postList.map((post, index) => (
-              <div className="card" key={index}>
+            posts.map((post, id) => (
+              <div className="card col-3 d-flex" key={post.id}>
                 <div>
-                  <img src={post.image} alt="" />
+                  <img src={`http://localhost:3000${post.image}`} alt="" />
                 </div>
-                <div className="card-body">
+                <div className="card-body ">
                   <h2>{post.title}</h2>
                   <p>{post.description}</p>
                   {post.tags.map((tag) => (
-                    <span className="badge rounded-pill text-bg-primary me-2">
+                    <span className="badge rounded text-bg-primary me-2">
                       {tag}
                     </span>
                   ))}
                   <button
                     onClick={() => removePost(index)}
-                    className="btn btn-danger mx-2"
+                    className="btn btn-danger m-2"
                   >
                     <i className="fa-solid fa-trash"></i>
                   </button>
