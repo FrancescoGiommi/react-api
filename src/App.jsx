@@ -105,6 +105,13 @@ function App() {
     console.log(newFormTags);
   };
 
+  const removePost = (deleteIndex) => {
+    const deletedPost = postList.filter((item, index) => {
+      return deleteIndex !== index;
+    });
+    setPostList(deletedPost);
+  };
+
   /* Funzione per cancellare l'elemento */
   const deletePost = (e, id) => {
     e.preventDefault();
@@ -207,38 +214,57 @@ function App() {
         {/* Creo una copia con il map e aggiunngo l'elemento al DOM */}
 
         <div className="row d-flex gap-3">
-          {postList.length ? (
-            posts.map((post) => (
-              <div key={post.id} className="card col-3 d-flex">
-                <div>
-                  <img
-                    src={`http://localhost:3000${post.image}`}
-                    className="card-img-top"
-                    alt=""
-                  />
-                </div>
-                <div className="card-body ">
-                  <h2>{post.title}</h2>
-                  <p>{post.description}</p>
-                  {post.tags.map((tag) => (
-                    <span className="badge rounded text-bg-primary me-2">
-                      {tag}
-                    </span>
-                  ))}
-                  <button
-                    onClick={(e) => deletePost(e, post.id)}
-                    className="btn btn-danger m-2"
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </div>
+          {posts.map((post) => (
+            <div key={post.id} className="card col-3 d-flex">
+              <div>
+                <img
+                  src={`http://localhost:3000${post.image}`}
+                  className="card-img-top"
+                  alt=""
+                />
               </div>
-            ))
-          ) : (
-            <div className="card">
-              <h3>Nessun post disponibile</h3>
+              <div className="card-body ">
+                <h2>{post.title}</h2>
+                <p>{post.description}</p>
+                {post.tags.map((tag) => (
+                  <span className="badge rounded text-bg-primary me-2">
+                    {tag}
+                  </span>
+                ))}
+                <button
+                  onClick={(e) => deletePost(e, post.id)}
+                  className="btn btn-danger m-2"
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
+              </div>
             </div>
-          )}
+          ))}
+        </div>
+
+        <div className="row d-flex gap-3">
+          {postList.map((post) => (
+            <div key={post.id} className="card col-3 d-flex">
+              <div>
+                <img src={post.image} className="card-img-top" alt="" />
+              </div>
+              <div className="card-body ">
+                <h2>{post.title}</h2>
+                <p>{post.description}</p>
+                {post.tags.map((tag) => (
+                  <span className="badge rounded text-bg-primary me-2">
+                    {tag}
+                  </span>
+                ))}
+                <button
+                  onClick={() => removePost(post.id)}
+                  className="btn btn-danger m-2"
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </>
