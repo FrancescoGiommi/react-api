@@ -69,6 +69,7 @@ function App() {
   const [postList, setPostList] = useState([]);
   const [editPost, setEditPost] = useState();
   const [posts, setPosts] = useState([]);
+
   /* Blocco l'invio del form con l'handler */
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -81,8 +82,6 @@ function App() {
     const newFormFields = {
       ...formData,
 
-      [e.target.name]: e.target.value,
-      [e.target.name]: e.target.value,
       [e.target.name]: e.target.value,
     };
     setFormData(newFormFields);
@@ -107,11 +106,16 @@ function App() {
   };
 
   /* Funzione per cancellare l'elemento */
-  const removePost = (deleteIndex) => {
-    const deletePost = postList.filter((item, index) => {
-      return deleteIndex !== index;
-    });
-    setPostList(deletePost);
+  const deletePost = (e, id) => {
+    e.preventDefault();
+    fetch("http://localhost:3000/posts/" + id, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const updatedPosts = posts.filter((post) => post.id !== id);
+        setPosts(updatedPosts);
+      });
   };
 
   /* Fetching dei dati */
@@ -204,10 +208,14 @@ function App() {
 
         <div className="row d-flex gap-3">
           {postList.length ? (
-            posts.map((post, id) => (
-              <div className="card col-3 d-flex" key={post.id}>
+            posts.map((post) => (
+              <div key={post.id} className="card col-3 d-flex">
                 <div>
-                  <img src={`http://localhost:3000${post.image}`} alt="" />
+                  <img
+                    src={`http://localhost:3000${post.image}`}
+                    className="card-img-top"
+                    alt=""
+                  />
                 </div>
                 <div className="card-body ">
                   <h2>{post.title}</h2>
@@ -218,7 +226,7 @@ function App() {
                     </span>
                   ))}
                   <button
-                    onClick={() => removePost(index)}
+                    onClick={(e) => deletePost(e, post.id)}
                     className="btn btn-danger m-2"
                   >
                     <i className="fa-solid fa-trash"></i>
